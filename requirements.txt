@@ -1,3 +1,4 @@
+# CPU-only build for Railway
 --extra-index-url https://download.pytorch.org/whl/cpu
 
 anthropic==0.88.0
