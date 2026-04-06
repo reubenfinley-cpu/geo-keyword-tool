@@ -102,7 +102,7 @@ Rules:
 - Avoid abstract, academic, or process-oriented phrasing (e.g. NOT "content governance strategy", NOT "brand consistency best practices")
 - No brand names, no job titles, no methodology terms
 - No duplicates or near-duplicates
-- Include a mix of conventional tool/software terms AND AI-flavoured variants (e.g. 'AI content workflow', 'agentic marketing platform', 'generative AI content ops'). Roughly 1 in 3 seeds should have an AI angle.
+- IMPORTANT: At least 5 of the 15 seeds MUST be AI-flavoured variants — e.g. 'AI content workflow', 'generative AI marketing platform', 'agentic content operations', 'AI brand governance', 'AI-powered DAM'. These should reflect how someone would search for AI-powered solutions to the pain point.
 
 Return a valid JSON array of exactly 15 strings. Nothing else."""
 
