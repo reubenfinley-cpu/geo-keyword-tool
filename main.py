@@ -52,7 +52,7 @@ Rules:
 - Focus exclusively on the journey stage provided
 - Do NOT include any brand names or vendor references
 - Do NOT include preamble, explanation, or numbering
-- Some prompts (roughly 1 in 3) should reflect AI-specific curiosity — asking how AI can help solve this problem, what AI-powered tools exist, or how other companies are using AI to address this challenge. These should feel natural, not forced.
+- IMPORTANT: At least 8 of the 30 prompts MUST include explicit reference to AI, artificial intelligence, generative AI, or agentic tools. These should feel natural for the persona and stage — at awareness stage they might ask 'is AI part of the solution here?' or 'are other companies using AI for this?', at exploration they ask 'what AI tools exist for this?', at evaluation they ask 'which AI platforms handle this best?' and 'how does AI capability compare across vendors?', at decision they ask 'what does AI-powered implementation look like?' or 'how mature is the AI in this platform?'
 - Context: Adobe enterprise marketing solutions (Experience Cloud, GenStudio, Firefly Enterprise)
 
 Return a valid JSON array of exactly 30 strings. Nothing else."""
