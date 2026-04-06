@@ -52,6 +52,7 @@ Rules:
 - Focus exclusively on the journey stage provided
 - Do NOT include any brand names or vendor references
 - Do NOT include preamble, explanation, or numbering
+- Some prompts (roughly 1 in 3) should reflect AI-specific curiosity — asking how AI can help solve this problem, what AI-powered tools exist, or how other companies are using AI to address this challenge. These should feel natural, not forced.
 - Context: Adobe enterprise marketing solutions (Experience Cloud, GenStudio, Firefly Enterprise)
 
 Return a valid JSON array of exactly 30 strings. Nothing else."""
@@ -101,6 +102,7 @@ Rules:
 - Avoid abstract, academic, or process-oriented phrasing (e.g. NOT "content governance strategy", NOT "brand consistency best practices")
 - No brand names, no job titles, no methodology terms
 - No duplicates or near-duplicates
+- Include a mix of conventional tool/software terms AND AI-flavoured variants (e.g. 'AI content workflow', 'agentic marketing platform', 'generative AI content ops'). Roughly 1 in 3 seeds should have an AI angle.
 
 Return a valid JSON array of exactly 15 strings. Nothing else."""
 
