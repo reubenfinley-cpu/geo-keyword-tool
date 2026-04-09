@@ -96,13 +96,12 @@ Given a list of prompts that a software buyer would type into an AI assistant,
 extract 15 seed terms suitable for keyword research on Google.
 
 Rules:
-- Each seed term should be 2-4 words
-- Every term must be a software or tool search query (e.g. "content workflow software", "brand management platform", "digital asset management tool", "marketing automation solution")
-- Think: what would someone type into Google when shopping for or evaluating software?
-- Avoid abstract, academic, or process-oriented phrasing (e.g. NOT "content governance strategy", NOT "brand consistency best practices")
-- No brand names, no job titles, no methodology terms
-- No duplicates or near-duplicates
-- IMPORTANT: At least 5 of the 15 seeds MUST be AI-flavoured variants — e.g. 'AI content workflow', 'generative AI marketing platform', 'agentic content operations', 'AI brand governance', 'AI-powered DAM'. These should reflect how someone would search for AI-powered solutions to the pain point.
+- Each seed term should be 2-3 words maximum
+- Use common, high-level terms that have broad search volume (e.g. 'brand management', 'content governance', 'creative workflow' — not 'brand intelligence platform' or 'AI-powered brand compliance')
+- Think of seeds as the parent topic, not the specific solution
+- Mix of problem-oriented terms ('brand consistency issues') and solution-oriented terms ('brand management software')
+- No brand names, no overly technical terms, no compound phrases over 3 words
+- No duplicates
 
 Return a valid JSON array of exactly 15 strings. Nothing else."""
 
