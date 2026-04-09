@@ -53,7 +53,7 @@ Rules:
 - Do NOT include any brand names or vendor references
 - Do NOT include preamble, explanation, or numbering
 - IMPORTANT: At least 8 of the 30 prompts MUST include explicit reference to AI, artificial intelligence, generative AI, or agentic tools. These should feel natural for the persona and stage — at awareness stage they might ask 'is AI part of the solution here?' or 'are other companies using AI for this?', at exploration they ask 'what AI tools exist for this?', at evaluation they ask 'which AI platforms handle this best?' and 'how does AI capability compare across vendors?', at decision they ask 'what does AI-powered implementation look like?' or 'how mature is the AI in this platform?'
-- Context: Adobe enterprise marketing solutions (Experience Cloud, GenStudio, Firefly Enterprise)
+- Product context: Adobe Brand Intelligence System (BIS) is an enterprise solution that helps large organisations maintain brand consistency at scale. It learns from historical approval and rejection decisions to encode implicit brand judgment — going beyond static guidelines. Key capabilities include automated brand validation, content governance across agencies and regions, and AI-powered review that reduces bottlenecks in the content supply chain. BIS is designed for multi-brand, multi-market enterprises where brand consistency is a strategic priority.
 
 Return a valid JSON array of exactly 30 strings. Nothing else."""
 
