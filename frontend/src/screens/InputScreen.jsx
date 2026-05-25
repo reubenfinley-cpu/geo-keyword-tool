@@ -24,6 +24,7 @@ export default function InputScreen({ onNext }) {
   const [stage, setStage] = useState(null);
   const [industry, setIndustry] = useState("");
   const [companySize, setCompanySize] = useState(SIZES[2]);
+  const [productContext, setProductContext] = useState("");
 
   const canSubmit = painPoint.trim() && persona && stage && industry.trim();
 
@@ -67,6 +68,15 @@ export default function InputScreen({ onNext }) {
       </div>
 
       <div>
+        <label style={{ fontSize: 12, color: "#888", display: "block", marginBottom: 6 }}>Product context</label>
+        <textarea
+          rows={3} value={productContext} onChange={e => setProductContext(e.target.value)}
+          placeholder="Describe the product or solution being researched (optional). E.g. what it does, who it's for, key capabilities."
+          style={{ width: "100%", fontSize: 14, borderRadius: 8, border: "0.5px solid #e5e5e5", padding: "10px 12px", resize: "vertical", fontFamily: "inherit", boxSizing: "border-box" }}
+        />
+      </div>
+
+      <div>
         <label style={{ fontSize: 12, color: "#888", display: "block", marginBottom: 8 }}>Persona</label>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8 }}>
           {PERSONAS.map(p => card(persona?.id === p.id, () => setPersona(p), p.label, p.desc))}
@@ -82,7 +92,7 @@ export default function InputScreen({ onNext }) {
 
       <button
         disabled={!canSubmit}
-        onClick={() => onNext({ painPoint, persona, stage, industry, companySize })}
+        onClick={() => onNext({ painPoint, persona, stage, industry, companySize, productContext })}
         style={{ width: "100%", padding: 10, fontSize: 14, borderRadius: 8, border: "0.5px solid #ddd", background: canSubmit ? "#111" : "#f5f5f5", color: canSubmit ? "#fff" : "#aaa", cursor: canSubmit ? "pointer" : "not-allowed" }}>
         Generate prompts
       </button>

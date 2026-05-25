@@ -32,6 +32,7 @@ class GeneratePromptsRequest(BaseModel):
     stage_description: str
     industry: str
     company_size: str
+    product_context: str = ""
 
 class ScoreKeywordsRequest(BaseModel):
     prompts: list[str]
@@ -42,21 +43,25 @@ class FullRunRequest(BaseModel):
 
 @app.post("/generate-prompts")
 def generate_prompts(req: GeneratePromptsRequest):
-    system = """You are an expert in buyer psychology and enterprise marketing.
-Your job is to generate realistic prompts that a real person would type into an AI assistant
-(like ChatGPT, Claude, or Perplexity) when experiencing a specific pain point.
-
-Rules:
-- Write in first person, as if the person is typing right now
-- Vary the length: some short and vague, some detailed and specific
-- Focus exclusively on the journey stage provided
-- Do NOT include any brand names or vendor references
-- Do NOT include preamble, explanation, or numbering
-- IMPORTANT: At least 8 of the 30 prompts MUST include explicit reference to AI, artificial intelligence, generative AI, or agentic tools. These should feel natural for the persona and stage — at awareness stage they might ask 'is AI part of the solution here?' or 'are other companies using AI for this?', at exploration they ask 'what AI tools exist for this?', at evaluation they ask 'which AI platforms handle this best?' and 'how does AI capability compare across vendors?', at decision they ask 'what does AI-powered implementation look like?' or 'how mature is the AI in this platform?'
-- Every prompt must include at least one reference to the creative, marketing, or brand context — e.g. 'creative teams', 'brand assets', 'marketing campaigns', 'brand guidelines', 'creative workflow'. Generic business or technology questions must always be grounded in the creative or marketing context.
-- Product context: Adobe Brand Intelligence System (BIS) is an enterprise solution that helps large organisations maintain brand consistency at scale. It learns from historical approval and rejection decisions to encode implicit brand judgment — going beyond static guidelines. Key capabilities include automated brand validation, content governance across agencies and regions, and AI-powered review that reduces bottlenecks in the content supply chain. BIS is designed for multi-brand, multi-market enterprises where brand consistency is a strategic priority.
-
-Return a valid JSON array of exactly 30 strings. Nothing else."""
+    system_lines = [
+        "You are an expert in buyer psychology and enterprise marketing.",
+        "Your job is to generate realistic prompts that a real person would type into an AI assistant",
+        "(like ChatGPT, Claude, or Perplexity) when experiencing a specific pain point.",
+        "",
+        "Rules:",
+        "- Write in first person, as if the person is typing right now",
+        "- Vary the length: some short and vague, some detailed and specific",
+        "- Focus exclusively on the journey stage provided",
+        "- Do NOT include any brand names or vendor references",
+        "- Do NOT include preamble, explanation, or numbering",
+        "- IMPORTANT: At least 8 of the 30 prompts MUST include explicit reference to AI, artificial intelligence, generative AI, or agentic tools. These should feel natural for the persona and stage — at awareness stage they might ask 'is AI part of the solution here?' or 'are other companies using AI for this?', at exploration they ask 'what AI tools exist for this?', at evaluation they ask 'which AI platforms handle this best?' and 'how does AI capability compare across vendors?', at decision they ask 'what does AI-powered implementation look like?' or 'how mature is the AI in this platform?'",
+        "- Every prompt must include at least one reference to the creative, marketing, or brand context — e.g. 'creative teams', 'brand assets', 'marketing campaigns', 'brand guidelines', 'creative workflow'. Generic business or technology questions must always be grounded in the creative or marketing context.",
+    ]
+    if req.product_context.strip():
+        system_lines.append(f"- Product context: {req.product_context.strip()}")
+    system_lines.append("")
+    system_lines.append("Return a valid JSON array of exactly 30 strings. Nothing else.")
+    system = "\n".join(system_lines)
 
     user = f"""Pain point: {req.pain_point}
 Persona: {req.persona} — {req.persona_description}
