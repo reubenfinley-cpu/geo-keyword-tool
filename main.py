@@ -43,7 +43,7 @@ class FullRunRequest(BaseModel):
 
 class DeduplicateRequest(BaseModel):
     prompts: list[str]
-    threshold: float = 0.92
+    threshold: float = 0.78
 
 @app.post("/generate-prompts")
 def generate_prompts(req: GeneratePromptsRequest):

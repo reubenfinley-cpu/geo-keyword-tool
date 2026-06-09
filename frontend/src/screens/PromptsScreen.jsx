@@ -80,7 +80,7 @@ export default function PromptsScreen({ inputData, prompts, setPrompts, onBack, 
   const [dedupPairs, setDedupPairs] = useState(null); // null = not yet run
   const [dedupLoading, setDedupLoading] = useState(false);
   const [manualKeeps, setManualKeeps] = useState(new Set());
-  const [threshold, setThreshold] = useState(0.92);
+  const [threshold, setThreshold] = useState(0.78);
 
   useEffect(() => {
     if (prompts.length === 0) fetchPrompts();
