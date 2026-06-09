@@ -191,6 +191,15 @@ def dataforseo_expand(body: dict):
     print(f"DEBUG: total keywords={len(all_keywords)}")
     return {"keywords": list(all_keywords.keys()), "keyword_data": list(all_keywords.values())}
 
+@app.post("/debug-similarity")
+def debug_similarity(body: dict):
+    prompts = body.get("prompts", [])
+    if len(prompts) != 2:
+        return {"error": "Provide exactly 2 prompts"}
+    embeddings = model.encode(prompts)
+    score = cosine_similarity([embeddings[0]], [embeddings[1]])[0][0]
+    return {"similarity": round(float(score), 4), "prompt_a": prompts[0], "prompt_b": prompts[1]}
+
 @app.get("/health")
 def health():
     return {"status": "ok"}
