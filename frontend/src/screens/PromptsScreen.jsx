@@ -19,15 +19,82 @@ const STAGE_DESCRIPTIONS = {
   "decision": "Close to choosing, looking for reassurance, pricing, case studies, or negotiation leverage",
 };
 
+function escapeHtml(str) {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function buildPromptCard({ text, similarity, onRemove, onKeep }) {
+  return (
+    <div style={{
+      background: "#fffdf0",
+      border: "0.5px solid #e8d080",
+      borderRadius: 8,
+      padding: "10px 12px",
+      display: "flex",
+      flexDirection: "column",
+      gap: 8,
+    }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8 }}>
+        <span
+          style={{ fontSize: 13, color: "#111", lineHeight: 1.5, flex: 1 }}
+          dangerouslySetInnerHTML={{ __html: escapeHtml(text) }}
+        />
+        <span style={{
+          fontSize: 11,
+          color: "#92610a",
+          background: "#fef3c0",
+          borderRadius: 4,
+          padding: "2px 6px",
+          flexShrink: 0,
+          whiteSpace: "nowrap",
+        }}>
+          {Math.round(similarity * 100)}% similar
+        </span>
+      </div>
+      <div style={{ display: "flex", gap: 6 }}>
+        <button
+          onClick={onRemove}
+          style={{ fontSize: 12, padding: "4px 10px", borderRadius: 6, border: "0.5px solid #ddd", background: "#fff", cursor: "pointer" }}>
+          Remove
+        </button>
+        <button
+          onClick={onKeep}
+          style={{ fontSize: 12, padding: "4px 10px", borderRadius: 6, border: "0.5px solid #e5e5e5", background: "#fff", color: "#888", cursor: "pointer" }}>
+          Keep anyway
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function PromptsScreen({ inputData, prompts, setPrompts, onBack, onNext }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [newPrompt, setNewPrompt] = useState("");
   const [runningResearch, setRunningResearch] = useState(false);
+  const [dedupPairs, setDedupPairs] = useState(null); // null = not yet run
+  const [dedupLoading, setDedupLoading] = useState(false);
+  const [manualKeeps, setManualKeeps] = useState(new Set());
+  const [threshold, setThreshold] = useState(0.92);
 
   useEffect(() => {
     if (prompts.length === 0) fetchPrompts();
   }, []);
+
+  async function runDedup(promptList, thresh) {
+    if (promptList.length < 2) { setDedupPairs([]); return; }
+    setDedupLoading(true);
+    try {
+      const res = await axios.post(`${API}/deduplicate`, { prompts: promptList, threshold: thresh });
+      setDedupPairs(res.data.pairs);
+    } catch (_) {}
+    setDedupLoading(false);
+  }
 
   async function fetchPrompts() {
     setLoading(true);
@@ -43,7 +110,10 @@ export default function PromptsScreen({ inputData, prompts, setPrompts, onBack, 
         company_size: inputData.companySize,
         product_context: inputData.productContext || "",
       });
-      setPrompts(res.data.prompts);
+      const ps = res.data.prompts;
+      setPrompts(ps);
+      setManualKeeps(new Set());
+      await runDedup(ps, threshold);
     } catch (e) {
       setError("Failed to generate prompts. Check the backend is running.");
     }
@@ -51,7 +121,19 @@ export default function PromptsScreen({ inputData, prompts, setPrompts, onBack, 
   }
 
   function removePrompt(i) {
-    setPrompts(prompts.filter((_, idx) => idx !== i));
+    const updated = prompts.filter((_, idx) => idx !== i);
+    setPrompts(updated);
+    runDedup(updated, threshold);
+  }
+
+  function removeDedupPrompt(text) {
+    const updated = prompts.filter(p => p !== text);
+    setPrompts(updated);
+    setDedupPairs(prev => (prev || []).filter(p => p.b_text !== text && p.a_text !== text));
+  }
+
+  function keepPrompt(text) {
+    setManualKeeps(prev => new Set([...prev, text]));
   }
 
   function addPrompt() {
@@ -73,7 +155,7 @@ export default function PromptsScreen({ inputData, prompts, setPrompts, onBack, 
       const keywordData = expandRes.data.keyword_data;
 
       const scoreRes = await axios.post(`${API}/score-keywords`, { prompts, keywords });
-      
+
       const enriched = scoreRes.data.results.map(r => {
         const match = keywordData.find(k => k.keyword === r.keyword);
         return { ...r, search_volume: match?.search_volume || 0, cpc: match?.cpc || 0 };
@@ -91,6 +173,8 @@ export default function PromptsScreen({ inputData, prompts, setPrompts, onBack, 
     </div>
   );
 
+  const unresolvedPairs = (dedupPairs || []).filter(pair => !manualKeeps.has(pair.b_text));
+
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
@@ -102,6 +186,45 @@ export default function PromptsScreen({ inputData, prompts, setPrompts, onBack, 
         </div>
         <div style={{ fontSize: 12, color: "#aaa" }}>{prompts.length} prompts</div>
       </div>
+
+      {dedupPairs !== null && (
+        <div style={{ border: "0.5px solid #e8d080", borderRadius: 12, padding: "12px 14px", background: "#fffdf5", display: "flex", flexDirection: "column", gap: 10 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <span style={{ fontSize: 12, fontWeight: 500, color: "#92610a" }}>
+              {dedupLoading
+                ? "Checking for duplicates…"
+                : unresolvedPairs.length > 0
+                  ? `${unresolvedPairs.length} potential duplicate${unresolvedPairs.length !== 1 ? "s" : ""} flagged`
+                  : "No duplicates found"}
+            </span>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ fontSize: 11, color: "#aaa" }}>Threshold: {Math.round(threshold * 100)}%</span>
+              <input
+                type="range" min={0.80} max={0.99} step={0.01}
+                value={threshold}
+                onChange={e => setThreshold(parseFloat(e.target.value))}
+                onPointerUp={e => runDedup(prompts, parseFloat(e.target.value))}
+                onMouseUp={e => runDedup(prompts, parseFloat(e.target.value))}
+                style={{ width: 80, cursor: "pointer" }}
+              />
+            </div>
+          </div>
+          {!dedupLoading && unresolvedPairs.length > 0 && (
+            <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+              {unresolvedPairs.map((pair, i) => (
+                <div key={i}>
+                  {buildPromptCard({
+                    text: pair.b_text,
+                    similarity: pair.similarity,
+                    onRemove: () => removeDedupPrompt(pair.b_text),
+                    onKeep: () => keepPrompt(pair.b_text),
+                  })}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       <div style={{ fontSize: 12, color: "#aaa" }}>
         Remove off-topic prompts, edit any that need tweaking, or add your own below.

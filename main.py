@@ -41,6 +41,10 @@ class ScoreKeywordsRequest(BaseModel):
 class FullRunRequest(BaseModel):
     prompts: list[str]
 
+class DeduplicateRequest(BaseModel):
+    prompts: list[str]
+    threshold: float = 0.92
+
 @app.post("/generate-prompts")
 def generate_prompts(req: GeneratePromptsRequest):
     system_lines = [
@@ -82,6 +86,27 @@ Company size: {req.company_size}"""
     text = text.strip().removeprefix("```json").removeprefix("```").removesuffix("```").strip()
     prompts = json.loads(text)
     return {"prompts": prompts}
+
+@app.post("/deduplicate")
+def deduplicate(req: DeduplicateRequest):
+    if len(req.prompts) < 2:
+        return {"pairs": []}
+    embeddings = model.encode(req.prompts)
+    sims = cosine_similarity(embeddings)
+    pairs = []
+    seen_b = set()
+    for i in range(len(req.prompts)):
+        for j in range(i + 1, len(req.prompts)):
+            if sims[i][j] >= req.threshold and j not in seen_b:
+                seen_b.add(j)
+                pairs.append({
+                    "a": i,
+                    "b": j,
+                    "a_text": req.prompts[i],
+                    "b_text": req.prompts[j],
+                    "similarity": round(float(sims[i][j]), 4),
+                })
+    return {"pairs": pairs}
 
 @app.post("/score-keywords")
 def score_keywords(req: ScoreKeywordsRequest):
