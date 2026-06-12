@@ -98,6 +98,15 @@ function App() {
             ))}
           </div>
 
+          {screen >= 1 && (inputData?.painPoint || painPointData?.painPoint) && (
+            <div style={{ marginBottom: "1.5rem", padding: "10px 14px", background: "#f9f9f9", border: "0.5px solid #e5e5e5", borderRadius: 8 }}>
+              <span style={{ fontSize: 11, color: "#aaa", display: "block", marginBottom: 3 }}>Pain point</span>
+              <span style={{ fontSize: 13, color: "#444", lineHeight: 1.5 }}>
+                {screen === 1 ? (painPointData?.painPoint || "") : (inputData?.painPoint || "")}
+              </span>
+            </div>
+          )}
+
           {screen === 0 && (
             <PainPointScreen onNext={(data) => { setPainPointData(data); setScreen(1); }} />
           )}
