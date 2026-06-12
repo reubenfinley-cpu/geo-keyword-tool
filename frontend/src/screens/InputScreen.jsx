@@ -10,7 +10,7 @@ const PERSONAS = [
 ];
 
 const STAGES = [
-  { id: "awareness", label: "Awareness", desc: "Something is broken but I can't name it yet" },
+  { id: "awareness", label: "Discovery", desc: "Something is broken but I can't name it yet" },
   { id: "exploration", label: "Exploration", desc: "I see the problem and I'm looking for solutions" },
   { id: "evaluation", label: "Evaluation", desc: "I'm comparing vendors and building a shortlist" },
   { id: "decision", label: "Decision", desc: "I'm close to choosing and need final reassurance" },
