@@ -108,7 +108,7 @@ export default function PromptsScreen({ inputData, prompts, setPrompts, onBack, 
         stage_description: STAGE_DESCRIPTIONS[inputData.stage.id],
         industry: inputData.industry,
         company_size: inputData.companySize,
-        product_context: inputData.productContext || "",
+        product_context: inputData.productDescription || inputData.productContext || "",
       });
       const ps = res.data.prompts;
       setPrompts(ps);

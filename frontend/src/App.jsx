@@ -103,11 +103,11 @@ function App() {
           )}
           {screen === 1 && (
             <InputScreen
-              onNext={(data) => { setInputData(data); setScreen(2); }}
+              onNext={(data) => { setInputData({ ...data, productDescription: painPointData?.productDescription || "" }); setScreen(2); }}
               initialPainPoint={painPointData?.painPoint || ""}
               initialPersona={painPointData?.persona || null}
               initialStage={painPointData?.stage || null}
-              initialProductContext={painPointData ? `${painPointData.productName}\n\n${painPointData.productDescription}`.trim() : ""}
+              initialProductContext={painPointData?.productDescription || ""}
             />
           )}
           {screen === 2 && <PromptsScreen inputData={inputData} prompts={prompts} setPrompts={setPrompts} onBack={() => setScreen(1)} onNext={(results) => { setResults(results); setScreen(3); }} />}
