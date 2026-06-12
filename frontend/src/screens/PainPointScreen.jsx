@@ -115,6 +115,13 @@ export default function PainPointScreen({ onNext }) {
       </div>
 
       <button
+        onClick={() => onNext({ painPoint: "", persona: null, stage: null, productName: "", productDescription: "" })}
+        style={{ background: "none", border: "none", fontSize: 12, color: "#aaa", cursor: "pointer", padding: 0, textDecoration: "underline", textDecorationColor: "#ddd", alignSelf: "flex-end" }}
+      >
+        Skip — enter pain point manually
+      </button>
+
+      <button
         disabled={!canGenerate || phase === "decomposing" || phase === "generating"}
         onClick={handleGenerate}
         style={{
