@@ -18,13 +18,13 @@ const STAGES = [
 
 const SIZES = ["1–50 employees", "51–200 employees", "201–1,000 employees", "1,001–5,000 employees", "5,000+ employees"];
 
-export default function InputScreen({ onNext, initialPainPoint = "", initialPersona = null, initialStage = null }) {
+export default function InputScreen({ onNext, initialPainPoint = "", initialPersona = null, initialStage = null, initialProductContext = "" }) {
   const [painPoint, setPainPoint] = useState(initialPainPoint);
   const [persona, setPersona] = useState(initialPersona);
   const [stage, setStage] = useState(initialStage);
   const [industry, setIndustry] = useState("");
   const [companySize, setCompanySize] = useState(SIZES[2]);
-  const [productContext, setProductContext] = useState("");
+  const [productContext, setProductContext] = useState(initialProductContext);
 
   const canSubmit = painPoint.trim() && persona && stage && industry.trim();
 

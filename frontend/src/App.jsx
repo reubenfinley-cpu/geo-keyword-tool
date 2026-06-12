@@ -107,6 +107,7 @@ function App() {
               initialPainPoint={painPointData?.painPoint || ""}
               initialPersona={painPointData?.persona || null}
               initialStage={painPointData?.stage || null}
+              initialProductContext={painPointData ? `${painPointData.productName}\n\n${painPointData.productDescription}`.trim() : ""}
             />
           )}
           {screen === 2 && <PromptsScreen inputData={inputData} prompts={prompts} setPrompts={setPrompts} onBack={() => setScreen(1)} onNext={(results) => { setResults(results); setScreen(3); }} />}

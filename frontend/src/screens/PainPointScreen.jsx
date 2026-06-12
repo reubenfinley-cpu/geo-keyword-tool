@@ -61,7 +61,7 @@ export default function PainPointScreen({ onNext }) {
   }
 
   function handleSelect(painPoint) {
-    onNext({ painPoint, persona, stage });
+    onNext({ painPoint, persona, stage, productName, productDescription });
   }
 
   const card = (selected, onClick, title, desc) => (
