@@ -1,4 +1,5 @@
 import { useState } from "react";
+import PainPointScreen from "./screens/PainPointScreen";
 import InputScreen from "./screens/InputScreen";
 import PromptsScreen from "./screens/PromptsScreen";
 import ResultsScreen from "./screens/ResultsScreen";
@@ -50,13 +51,16 @@ function PasswordGate({ onAuth }) {
 
 function App() {
   const [authed, setAuthed] = useState(() => sessionStorage.getItem("auth") === "1");
-  const [screen, setScreen] = useState(1);
+  const [screen, setScreen] = useState(0);
 
   if (!authed) return <PasswordGate onAuth={() => setAuthed(true)} />;
+  const [painPointData, setPainPointData] = useState(null);
   const [inputData, setInputData] = useState(null);
   const [prompts, setPrompts] = useState([]);
   const [results, setResults] = useState(null);
   const [showHow, setShowHow] = useState(false);
+
+  const STEPS = ["Pain points", "Input", "Prompts", "Results"];
 
   return (
     <div style={{ maxWidth: 720, margin: "0 auto", padding: "2rem 1rem" }}>
@@ -77,24 +81,34 @@ function App() {
       ) : (
         <>
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: "2rem" }}>
-            {["Input", "Prompts", "Results"].map((label, i) => (
-              <div key={i} style={{ display: "flex", alignItems: "center", gap: 8, flex: i < 2 ? 1 : "none" }}>
+            {STEPS.map((label, i) => (
+              <div key={i} style={{ display: "flex", alignItems: "center", gap: 8, flex: i < STEPS.length - 1 ? 1 : "none" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                   <div style={{
                     width: 24, height: 24, borderRadius: "50%", display: "flex", alignItems: "center",
                     justifyContent: "center", fontSize: 11, fontWeight: 500,
-                    background: screen === i + 1 ? "#111" : screen > i + 1 ? "#eee" : "transparent",
-                    color: screen === i + 1 ? "#fff" : "#888",
-                    border: "0.5px solid " + (screen === i + 1 ? "#111" : "#ddd"),
+                    background: screen === i ? "#111" : screen > i ? "#eee" : "transparent",
+                    color: screen === i ? "#fff" : "#888",
+                    border: "0.5px solid " + (screen === i ? "#111" : "#ddd"),
                   }}>{i + 1}</div>
-                  <span style={{ fontSize: 13, color: screen === i + 1 ? "#111" : "#aaa", fontWeight: screen === i + 1 ? 500 : 400 }}>{label}</span>
+                  <span style={{ fontSize: 13, color: screen === i ? "#111" : "#aaa", fontWeight: screen === i ? 500 : 400 }}>{label}</span>
                 </div>
-                {i < 2 && <div style={{ flex: 1, height: 0.5, background: "#eee" }} />}
+                {i < STEPS.length - 1 && <div style={{ flex: 1, height: 0.5, background: "#eee" }} />}
               </div>
             ))}
           </div>
 
-          {screen === 1 && <InputScreen onNext={(data) => { setInputData(data); setScreen(2); }} />}
+          {screen === 0 && (
+            <PainPointScreen onNext={(data) => { setPainPointData(data); setScreen(1); }} />
+          )}
+          {screen === 1 && (
+            <InputScreen
+              onNext={(data) => { setInputData(data); setScreen(2); }}
+              initialPainPoint={painPointData?.painPoint || ""}
+              initialPersona={painPointData?.persona || null}
+              initialStage={painPointData?.stage || null}
+            />
+          )}
           {screen === 2 && <PromptsScreen inputData={inputData} prompts={prompts} setPrompts={setPrompts} onBack={() => setScreen(1)} onNext={(results) => { setResults(results); setScreen(3); }} />}
           {screen === 3 && <ResultsScreen results={results} onBack={() => setScreen(2)} />}
         </>

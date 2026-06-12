@@ -191,6 +191,65 @@ def dataforseo_expand(body: dict):
     print(f"DEBUG: total keywords={len(all_keywords)}")
     return {"keywords": list(all_keywords.keys()), "keyword_data": list(all_keywords.values())}
 
+class DecomposeCapabilitiesRequest(BaseModel):
+    product_name: str
+    product_description: str
+
+class GeneratePainPointsRequest(BaseModel):
+    capabilities: list[str]
+    persona: str
+    persona_description: str
+    journey_stage: str
+
+@app.post("/decompose-capabilities")
+def decompose_capabilities(req: DecomposeCapabilitiesRequest):
+    import json
+    system = """You are a product strategist specialising in B2B SaaS.
+Analyse the product description and decompose it into 8–12 distinct capabilities.
+Each capability must be a concise verb-phrase (e.g. "enforce brand guidelines across distributed teams", "automate asset tagging with AI").
+Focus on what the product actually does, not marketing language.
+Return a valid JSON array of strings. Nothing else."""
+
+    user = f"Product name: {req.product_name}\n\nProduct description:\n{req.product_description}"
+
+    response = claude.messages.create(
+        model="claude-sonnet-4-20250514",
+        max_tokens=1000,
+        system=system,
+        messages=[{"role": "user", "content": user}]
+    )
+    text = response.content[0].text
+    text = text.strip().removeprefix("```json").removeprefix("```").removesuffix("```").strip()
+    capabilities = json.loads(text)
+    return {"capabilities": capabilities}
+
+@app.post("/generate-pain-points")
+def generate_pain_points(req: GeneratePainPointsRequest):
+    import json
+    system = """You are a B2B buyer research expert.
+Given a list of product capabilities and a buyer persona at a specific journey stage, generate exactly 8 distinct pain points that this persona would experience — pain points that the listed capabilities directly address.
+Rules:
+- Write each pain point from the persona's perspective, in plain language (not marketing copy)
+- Each pain point should be 1–2 sentences describing a concrete, relatable problem
+- Tailor the language and context to the persona's role and the journey stage
+- Do not reference the product or any vendor
+- No duplicates, no generic filler
+Return a valid JSON array of exactly 8 strings. Nothing else."""
+
+    caps_text = "\n".join(f"- {c}" for c in req.capabilities)
+    user = f"Capabilities:\n{caps_text}\n\nPersona: {req.persona} — {req.persona_description}\nJourney stage: {req.journey_stage}"
+
+    response = claude.messages.create(
+        model="claude-sonnet-4-20250514",
+        max_tokens=1500,
+        system=system,
+        messages=[{"role": "user", "content": user}]
+    )
+    text = response.content[0].text
+    text = text.strip().removeprefix("```json").removeprefix("```").removesuffix("```").strip()
+    pain_points = json.loads(text)
+    return {"pain_points": pain_points}
+
 @app.post("/debug-similarity")
 def debug_similarity(body: dict):
     prompts = body.get("prompts", [])
