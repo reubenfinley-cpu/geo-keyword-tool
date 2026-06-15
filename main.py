@@ -75,7 +75,7 @@ Industry: {req.industry}
 Company size: {req.company_size}"""
 
     response = claude.messages.create(
-        model="claude-sonnet-4-20250514",
+        model="claude-sonnet-4-6",
         max_tokens=4000,
         system=system,
         messages=[{"role": "user", "content": user}]
@@ -138,7 +138,7 @@ Rules:
 Return a valid JSON array of exactly 15 strings. Nothing else."""
 
     response = claude.messages.create(
-        model="claude-sonnet-4-20250514",
+        model="claude-sonnet-4-6",
         max_tokens=1000,
         system=system,
         messages=[{"role": "user", "content": f"Prompts:\n" + "\n".join(req.prompts)}]
@@ -213,7 +213,7 @@ Return a valid JSON array of strings. Nothing else."""
     user = f"Product name: {req.product_name}\n\nProduct description:\n{req.product_description}"
 
     response = claude.messages.create(
-        model="claude-sonnet-4-20250514",
+        model="claude-sonnet-4-6",
         max_tokens=1000,
         system=system,
         messages=[{"role": "user", "content": user}]
@@ -240,7 +240,7 @@ Return a valid JSON array of exactly 8 strings. Nothing else."""
     user = f"Capabilities:\n{caps_text}\n\nPersona: {req.persona} — {req.persona_description}\nJourney stage: {req.journey_stage}"
 
     response = claude.messages.create(
-        model="claude-sonnet-4-20250514",
+        model="claude-sonnet-4-6",
         max_tokens=1500,
         system=system,
         messages=[{"role": "user", "content": user}]
