@@ -23,7 +23,7 @@ function PasswordGate({ onAuth }) {
   return (
     <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
       <div style={{ width: 320, padding: "2rem", border: "0.5px solid #e0e0e0", borderRadius: 8 }}>
-        <h1 style={{ fontSize: 18, fontWeight: 500, margin: "0 0 0.25rem" }}>GEO keyword research</h1>
+        <h1 style={{ fontSize: 18, fontWeight: 500, margin: "0 0 0.25rem" }}>GEO Research Tool</h1>
         <p style={{ fontSize: 13, color: "#888", margin: "0 0 1.5rem" }}>Adobe · AI search visibility</p>
         <form onSubmit={handleSubmit}>
           <input
@@ -66,7 +66,7 @@ function App() {
     <div style={{ maxWidth: 720, margin: "0 auto", padding: "2rem 1rem" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "2rem" }}>
         <div>
-          <h1 style={{ fontSize: 20, fontWeight: 500, margin: 0 }}>GEO keyword research</h1>
+          <h1 style={{ fontSize: 20, fontWeight: 500, margin: 0 }}>GEO Research Tool</h1>
           <p style={{ fontSize: 13, color: "#888", margin: "4px 0 0" }}>Adobe · AI search visibility</p>
         </div>
         <button
