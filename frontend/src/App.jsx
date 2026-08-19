@@ -52,13 +52,13 @@ function PasswordGate({ onAuth }) {
 function App() {
   const [authed, setAuthed] = useState(() => sessionStorage.getItem("auth") === "1");
   const [screen, setScreen] = useState(0);
-
-  if (!authed) return <PasswordGate onAuth={() => setAuthed(true)} />;
   const [painPointData, setPainPointData] = useState(null);
   const [inputData, setInputData] = useState(null);
   const [prompts, setPrompts] = useState([]);
   const [results, setResults] = useState(null);
   const [showHow, setShowHow] = useState(false);
+
+  if (!authed) return <PasswordGate onAuth={() => setAuthed(true)} />;
 
   const STEPS = ["Pain points", "Input", "Prompts", "Results"];
 
