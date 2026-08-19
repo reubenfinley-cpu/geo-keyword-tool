@@ -5,18 +5,35 @@ import PromptsScreen from "./screens/PromptsScreen";
 import ResultsScreen from "./screens/ResultsScreen";
 import HowItWorksScreen from "./screens/HowItWorksScreen";
 
+const API = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
+
 function PasswordGate({ onAuth }) {
   const [value, setValue] = useState("");
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    if (value === "adobe2026") {
-      sessionStorage.setItem("auth", "1");
-      onAuth();
-    } else {
+    setLoading(true);
+    setError(false);
+    try {
+      const res = await fetch(`${API}/auth`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password: value }),
+      });
+      if (res.ok) {
+        sessionStorage.setItem("auth", "1");
+        onAuth();
+      } else {
+        setError(true);
+        setValue("");
+      }
+    } catch {
       setError(true);
       setValue("");
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -39,10 +56,11 @@ function PasswordGate({ onAuth }) {
             }}
           />
           {error && <p style={{ fontSize: 12, color: "#e53e3e", margin: "0 0 0.5rem" }}>Incorrect password</p>}
-          <button type="submit" style={{
+          <button type="submit" disabled={loading} style={{
             width: "100%", padding: "0.5rem", fontSize: 14, fontWeight: 500,
-            background: "#111", color: "#fff", border: "none", borderRadius: 6, cursor: "pointer"
-          }}>Enter</button>
+            background: "#111", color: "#fff", border: "none", borderRadius: 6,
+            cursor: loading ? "default" : "pointer", opacity: loading ? 0.6 : 1,
+          }}>{loading ? "Checking…" : "Enter"}</button>
         </form>
       </div>
     </div>

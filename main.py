@@ -1,6 +1,7 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+import secrets
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
@@ -258,6 +259,18 @@ def debug_similarity(body: dict):
     embeddings = model.encode(prompts)
     score = cosine_similarity([embeddings[0]], [embeddings[1]])[0][0]
     return {"similarity": round(float(score), 4), "prompt_a": prompts[0], "prompt_b": prompts[1]}
+
+class AuthRequest(BaseModel):
+    password: str
+
+@app.post("/auth")
+def auth(req: AuthRequest):
+    app_password = os.getenv("APP_PASSWORD")
+    if not app_password:
+        raise HTTPException(status_code=500, detail="Server misconfigured: APP_PASSWORD not set")
+    if not secrets.compare_digest(req.password, app_password):
+        raise HTTPException(status_code=401, detail="Incorrect password")
+    return {"ok": True}
 
 @app.get("/health")
 def health():
