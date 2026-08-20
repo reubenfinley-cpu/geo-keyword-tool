@@ -80,7 +80,7 @@ export default function PainPointScreen({ onNext }) {
     <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
         <div style={{ gridColumn: "1 / -1" }}>
-          <label style={{ fontSize: 12, color: "#888", display: "block", marginBottom: 6 }}>Product name</label>
+          <label style={{ fontSize: 12, color: "#888", display: "block", marginBottom: 6 }}>Adobe product name</label>
           <input
             value={productName}
             onChange={e => setProductName(e.target.value)}
@@ -89,7 +89,7 @@ export default function PainPointScreen({ onNext }) {
           />
         </div>
         <div style={{ gridColumn: "1 / -1" }}>
-          <label style={{ fontSize: 12, color: "#888", display: "block", marginBottom: 6 }}>Product description</label>
+          <label style={{ fontSize: 12, color: "#888", display: "block", marginBottom: 6 }}>Adobe product description</label>
           <textarea
             rows={4}
             value={productDescription}

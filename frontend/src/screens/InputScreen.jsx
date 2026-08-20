@@ -48,7 +48,7 @@ export default function InputScreen({ onNext, initialPainPoint = "", initialPers
       </div>
 
       <div>
-        <label style={{ fontSize: 12, color: "#888", display: "block", marginBottom: 6 }}>Product context</label>
+        <label style={{ fontSize: 12, color: "#888", display: "block", marginBottom: 6 }}>Adobe product description</label>
         <textarea
           rows={3} value={productContext} onChange={e => setProductContext(e.target.value)}
           placeholder="Describe the product or solution being researched (optional). E.g. what it does, who it's for, key capabilities."
