@@ -254,15 +254,15 @@ const SECTIONS = [
   },
   {
     num: "02",
-    title: "Cosine similarity scoring",
-    body: "Every keyword candidate is also embedded as a vector. We score each keyword by its cosine similarity to the centroid — the cosine of the angle between the two vectors. A small angle means the keyword is semantically close to what your buyer is thinking. Scores above 0.80 are teal, 0.65-0.80 are amber, and lower-scoring keywords are grey.",
-    Viz: SimilarityViz,
-  },
-  {
-    num: "03",
     title: "DataForSEO keyword expansion",
     body: "Before scoring, Claude extracts 15 short seed terms from your prompts — software-category phrases like 'content ops platform'. DataForSEO's keyword suggestions API expands each seed into related terms with real search volume and CPC data, giving you a grounded pool of candidates to score against the centroid.",
     Viz: ExpansionViz,
+  },
+  {
+    num: "03",
+    title: "Cosine similarity scoring",
+    body: "Every keyword candidate is also embedded as a vector. We score each keyword by its cosine similarity to the centroid — the cosine of the angle between the two vectors. A small angle means the keyword is semantically close to what your buyer is thinking. Scores above 0.80 are teal, 0.65-0.80 are amber, and lower-scoring keywords are grey.",
+    Viz: SimilarityViz,
   },
 ];
 
