@@ -106,8 +106,6 @@ export default function PromptsScreen({ inputData, prompts, setPrompts, onBack, 
         persona_description: PERSONA_DESCRIPTIONS[inputData.persona.id],
         stage: inputData.stage.label,
         stage_description: STAGE_DESCRIPTIONS[inputData.stage.id],
-        industry: inputData.industry,
-        company_size: inputData.companySize,
         product_context: inputData.productDescription || inputData.productContext || "",
       });
       const ps = res.data.prompts;
@@ -181,7 +179,7 @@ export default function PromptsScreen({ inputData, prompts, setPrompts, onBack, 
         <div>
           <div style={{ fontSize: 14, fontWeight: 500, color: "#111" }}>Review and refine prompts</div>
           <div style={{ fontSize: 12, color: "#888", marginTop: 2 }}>
-            {inputData.persona.label} · {inputData.stage.label} · {inputData.industry} · {inputData.companySize}
+            {inputData.persona.label} · {inputData.stage.label}
           </div>
         </div>
         <div style={{ fontSize: 12, color: "#aaa" }}>{prompts.length} prompts</div>

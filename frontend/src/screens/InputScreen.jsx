@@ -16,17 +16,13 @@ const STAGES = [
   { id: "decision", label: "Decision", desc: "I'm close to choosing and need final reassurance" },
 ];
 
-const SIZES = ["1–50 employees", "51–200 employees", "201–1,000 employees", "1,001–5,000 employees", "5,000+ employees"];
-
 export default function InputScreen({ onNext, initialPainPoint = "", initialPersona = null, initialStage = null, initialProductContext = "" }) {
   const [painPoint, setPainPoint] = useState(initialPainPoint);
   const [persona, setPersona] = useState(initialPersona);
   const [stage, setStage] = useState(initialStage);
-  const [industry, setIndustry] = useState("");
-  const [companySize, setCompanySize] = useState(SIZES[2]);
   const [productContext, setProductContext] = useState(initialProductContext);
 
-  const canSubmit = painPoint.trim() && persona && stage && industry.trim();
+  const canSubmit = painPoint.trim() && persona && stage;
 
   const card = (selected, onClick, title, desc) => (
     <div onClick={onClick} style={{
@@ -49,22 +45,6 @@ export default function InputScreen({ onNext, initialPainPoint = "", initialPers
           placeholder="Describe the pain point in plain language. E.g. difficulty scaling content production while maintaining brand consistency across global markets."
           style={{ width: "100%", fontSize: 14, borderRadius: 8, border: "0.5px solid #e5e5e5", padding: "10px 12px", resize: "vertical", fontFamily: "inherit", boxSizing: "border-box" }}
         />
-      </div>
-
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
-        <div>
-          <label style={{ fontSize: 12, color: "#888", display: "block", marginBottom: 6 }}>Industry</label>
-          <input value={industry} onChange={e => setIndustry(e.target.value)}
-            placeholder="e.g. B2B SaaS, Financial services"
-            style={{ width: "100%", fontSize: 14, borderRadius: 8, border: "0.5px solid #e5e5e5", padding: "8px 12px", fontFamily: "inherit", boxSizing: "border-box" }} />
-        </div>
-        <div>
-          <label style={{ fontSize: 12, color: "#888", display: "block", marginBottom: 6 }}>Company size</label>
-          <select value={companySize} onChange={e => setCompanySize(e.target.value)}
-            style={{ width: "100%", fontSize: 14, borderRadius: 8, border: "0.5px solid #e5e5e5", padding: "8px 12px", fontFamily: "inherit", boxSizing: "border-box" }}>
-            {SIZES.map(s => <option key={s}>{s}</option>)}
-          </select>
-        </div>
       </div>
 
       <div>
@@ -92,7 +72,7 @@ export default function InputScreen({ onNext, initialPainPoint = "", initialPers
 
       <button
         disabled={!canSubmit}
-        onClick={() => onNext({ painPoint, persona, stage, industry, companySize, productContext })}
+        onClick={() => onNext({ painPoint, persona, stage, productContext })}
         style={{ width: "100%", padding: 10, fontSize: 14, borderRadius: 8, border: "0.5px solid #ddd", background: canSubmit ? "#111" : "#f5f5f5", color: canSubmit ? "#fff" : "#aaa", cursor: canSubmit ? "pointer" : "not-allowed" }}>
         Generate prompts
       </button>

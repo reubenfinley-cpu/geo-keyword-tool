@@ -31,8 +31,6 @@ class GeneratePromptsRequest(BaseModel):
     persona_description: str
     stage: str
     stage_description: str
-    industry: str
-    company_size: str
     product_context: str = ""
 
 class ScoreKeywordsRequest(BaseModel):
@@ -71,9 +69,7 @@ def generate_prompts(req: GeneratePromptsRequest):
 
     user = f"""Pain point: {req.pain_point}
 Persona: {req.persona} — {req.persona_description}
-Journey stage: {req.stage} — {req.stage_description}
-Industry: {req.industry}
-Company size: {req.company_size}"""
+Journey stage: {req.stage} — {req.stage_description}"""
 
     response = claude.messages.create(
         model="claude-sonnet-4-6",
