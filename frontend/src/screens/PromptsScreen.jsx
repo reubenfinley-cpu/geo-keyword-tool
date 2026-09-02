@@ -3,14 +3,6 @@ import axios from "axios";
 
 const API = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
 
-const PERSONA_DESCRIPTIONS = {
-  "cmo": "Faces unrelenting pressure to deliver more with fewer resources. Battles fragmented tech, siloed teams, and organizational chaos that hold marketing back. Needs content at unprecedented scale to meet customer demand for hyper-personalization — but creative teams are stretched thin and burnout is rising. Evaluates tools on whether they drive business growth, unlock high-performing creative at unmatched scale and speed, and help marketing prove its value to the board.",
-  "marketing-dm": "Brings CMO vision to life through campaign execution, performance metrics, and team output. Battles tech silos, slow approvals, and manual workflows that slow execution and kill ROI. Expected to execute across fragmented tools, channels, and audiences while resources shrink and expectations rise. Evaluates tools on whether they deliver real-time performance insights, remove creative bottlenecks, and enable hyper-personalized experiences at scale.",
-  "creative-dm": "Leads creative excellence and brand integrity while facing skyrocketing content demand with fewer resources. Worries about AI making everything look the same. Needs to deliver standout, on-brand content across more channels, faster than ever — without burning out the team. Evaluates tools on whether they free creatives from the mundane, unlock data-driven creativity, and protect brand consistency at scale without sacrificing creative quality.",
-  "cio": "Increasingly tasked with setting business strategy and owning outcomes beyond IT. Battles fragmented technology, siloed teams, legacy systems, and a workforce unprepared for AI. Cares deeply about security, governance, responsible AI, and reducing vendor sprawl. Evaluates tools on whether they modernize the tech stack, consolidate point solutions into a unified platform, and deliver trusted, enterprise-grade AI with accountability and transparency at the core.",
-  "it-dm": "Executes the CIO's strategy and manages the day-to-day reality of disparate, outdated tech stacks that stifle innovation and burden IT with costly maintenance. Faces mounting pressure to prove ROI, cut costs, and scale efficiently. Cares about security, compliance, system performance, and upskilling the workforce for new ways of working. Evaluates tools on integration reliability, responsible AI governance, and whether they reduce vendor sprawl and streamline IT maintenance.",
-  "martech-dm": "Bridges CMO vision and CIO strategy through technical campaign execution and MarTech stack management. Battles tech silos, slow approvals, dated tools, and manual workflows that stall delivery and kill ROI. Must orchestrate campaigns across fragmented tools and channels while budgets shrink and customer demand for hyper-personalized omnichannel experiences soars. Evaluates tools on whether they unify workflows, integrate cleanly, enable AI-driven decision making, and reduce operational friction without burning out the team.",
-};
 
 
 function escapeHtml(str) {
@@ -97,7 +89,7 @@ export default function PromptsScreen({ inputData, prompts, setPrompts, onBack, 
       const res = await axios.post(`${API}/generate-prompts`, {
         pain_point: inputData.painPoint,
         persona: inputData.persona.label,
-        persona_description: PERSONA_DESCRIPTIONS[inputData.persona.id],
+        persona_description: inputData.persona.desc,
         stage: inputData.stage.label,
         stage_description: inputData.stage.desc,
         product_context: inputData.productDescription || inputData.productContext || "",
