@@ -58,7 +58,7 @@ def generate_prompts(req: GeneratePromptsRequest):
         "- Focus exclusively on the journey stage provided",
         "- Do NOT include any brand names or vendor references",
         "- Do NOT include preamble, explanation, or numbering",
-        "- Adobe's core value proposition is AI-driven, so exactly 8 of the 30 prompts must be AI-adjacent. However, the framing must honestly reflect where the persona is in their journey. At Discovery stage, references to the solution category must only appear as vague curiosity or peer comparison — the persona has not yet identified a solution (e.g. how are other companies solving this?, is there a smarter way to handle this than what we're doing now?). Never use explicit solution searches, capability questions, or vendor references at Discovery stage. At Exploration stage, prompts can begin to reference solution categories and approaches. At Evaluation stage, prompts can reference specific capabilities, feature requirements, and platform comparisons. At Decision stage, prompts can reference pricing, implementation timelines, integration requirements, and risk mitigation.",
+        "- Adobe's core value proposition is AI-driven, so exactly 8 of the 30 prompts must be AI-adjacent. However, the framing must honestly reflect where the persona is in their journey. At Discovery stage, AI references must only appear as vague curiosity or peer comparison — the persona has not yet identified AI as a solution (e.g. \"how are other companies solving this?\", \"is there a smarter way to handle this than what we're doing now?\"). Never use explicit AI tool searches, capability questions, or vendor references at Discovery stage. At exploration stage, prompts can begin to ask what approaches or categories exist. At evaluation and decision stages, prompts can reference AI capabilities, platform comparisons, and specific use cases directly.",
         "- Every prompt must be clearly attributable to the defined persona and their professional context. References to domain-specific vocabulary should appear where they read naturally and help ground the prompt in the persona's world — but do not force jargon into prompts where the persona's professional context is already implied by the framing.",
         "- Every prompt must be a direct expression of the stated pain point. Do not introduce adjacent pain points, related product capabilities, or topics not explicitly implied by the pain point description. If a prompt could plausibly belong to a different pain point, rewrite or cut it.",
     ]
@@ -198,6 +198,7 @@ class GeneratePainPointsRequest(BaseModel):
     persona: str
     persona_description: str
     journey_stage: str
+    journey_stage_description: str = ""
 
 @app.post("/decompose-capabilities")
 def decompose_capabilities(req: DecomposeCapabilitiesRequest):
@@ -235,7 +236,7 @@ Rules:
 Return a valid JSON array of exactly 8 strings. Nothing else."""
 
     caps_text = "\n".join(f"- {c}" for c in req.capabilities)
-    user = f"Capabilities:\n{caps_text}\n\nPersona: {req.persona} — {req.persona_description}\nJourney stage: {req.journey_stage}"
+    user = f"Capabilities:\n{caps_text}\n\nPersona: {req.persona} — {req.persona_description}\nJourney stage: {req.journey_stage} — {req.journey_stage_description}"
 
     response = claude.messages.create(
         model="claude-sonnet-4-6",

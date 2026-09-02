@@ -12,12 +12,6 @@ const PERSONA_DESCRIPTIONS = {
   "martech-dm": "Bridges CMO vision and CIO strategy through technical campaign execution and MarTech stack management. Battles tech silos, slow approvals, dated tools, and manual workflows that stall delivery and kill ROI. Must orchestrate campaigns across fragmented tools and channels while budgets shrink and customer demand for hyper-personalized omnichannel experiences soars. Evaluates tools on whether they unify workflows, integrate cleanly, enable AI-driven decision making, and reduce operational friction without burning out the team.",
 };
 
-const STAGE_DESCRIPTIONS = {
-  "awareness": "Something feels broken but they cannot name the problem yet — describing symptoms",
-  "exploration": "Understands the problem clearly and is actively looking for approaches and solutions",
-  "evaluation": "Knows what kind of solution they need and is comparing vendors and building a shortlist",
-  "decision": "Close to choosing, looking for reassurance, pricing, case studies, or negotiation leverage",
-};
 
 function escapeHtml(str) {
   return str
@@ -105,7 +99,7 @@ export default function PromptsScreen({ inputData, prompts, setPrompts, onBack, 
         persona: inputData.persona.label,
         persona_description: PERSONA_DESCRIPTIONS[inputData.persona.id],
         stage: inputData.stage.label,
-        stage_description: STAGE_DESCRIPTIONS[inputData.stage.id],
+        stage_description: inputData.stage.desc,
         product_context: inputData.productDescription || inputData.productContext || "",
       });
       const ps = res.data.prompts;

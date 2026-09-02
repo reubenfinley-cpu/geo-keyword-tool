@@ -1,23 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
+import { PERSONAS, STAGES } from "../constants";
 
 const API = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
-
-const PERSONAS = [
-  { id: "cmo", label: "CMO", desc: "Vision, budget, business outcomes" },
-  { id: "marketing-dm", label: "Marketing DM", desc: "Execution, campaign performance" },
-  { id: "creative-dm", label: "Creative DM", desc: "Brand, creative excellence" },
-  { id: "cio", label: "CIO", desc: "Digital transformation, AI strategy" },
-  { id: "it-dm", label: "IT DM", desc: "Integration, security, vendor eval" },
-  { id: "martech-dm", label: "MarTech / Ops DM", desc: "Stack, campaign ops, data" },
-];
-
-const STAGES = [
-  { id: "awareness", label: "Discovery", desc: "Something is broken but I can't name it yet" },
-  { id: "exploration", label: "Exploration", desc: "I see the problem and I'm looking for solutions" },
-  { id: "evaluation", label: "Evaluation", desc: "I'm comparing vendors and building a shortlist" },
-  { id: "decision", label: "Decision", desc: "I'm close to choosing and need final reassurance" },
-];
 
 export default function PainPointScreen({ onNext }) {
   const [productName, setProductName] = useState("");
@@ -51,6 +36,7 @@ export default function PainPointScreen({ onNext }) {
         persona: persona.label,
         persona_description: persona.desc,
         journey_stage: stage.label,
+        journey_stage_description: stage.desc,
       });
       setPainPoints(ppRes.data.pain_points);
       setPhase("done");
