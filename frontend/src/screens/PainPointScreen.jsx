@@ -89,7 +89,7 @@ export default function PainPointScreen({ onNext }) {
       <div>
         <label style={{ fontSize: 12, color: "#888", display: "block", marginBottom: 8 }}>Persona</label>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8 }}>
-          {PERSONAS.map(p => card(persona?.id === p.id, () => setPersona(p), p.label, p.desc))}
+          {PERSONAS.map(p => card(persona?.id === p.id, () => setPersona(p), p.label, p.shortDesc))}
         </div>
       </div>
 
