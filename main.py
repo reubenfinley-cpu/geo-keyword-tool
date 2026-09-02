@@ -231,6 +231,7 @@ Rules:
 - Write each pain point from the persona's perspective, in plain language (not marketing copy)
 - Each pain point should be 1–2 sentences describing a concrete, relatable problem
 - Tailor the language and context to the persona's role and the journey stage. At Discovery stage, pain points must describe symptoms the persona feels without any awareness that a solution exists. At Exploration stage, pain points can assume the persona has identified the problem category and is beginning to look for solutions. At Evaluation stage, pain points reflect a persona who is actively comparing options and needs to justify a specific choice. At Decision stage, pain points are about risk, confidence, and finalising commitment — the persona is close to buying but needs reassurance.
+- Pain points must describe the underlying business problem the capability solves, not the capability itself. Write each pain point as the consequence the buyer experiences from not having this capability — not as a description of what the capability does.
 - Do not reference the product or any vendor
 - No duplicates, no generic filler
 Return a valid JSON array of exactly 8 strings. Nothing else."""
